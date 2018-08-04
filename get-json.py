@@ -20,7 +20,8 @@ def get_html(url):
             result = json.dumps(json.loads(
                 response.text.strip().strip('()')), indent=4, ensure_ascii=False)
             return result
-    except requests.ConnectionError:
+    except requests.ConnectionError as e:
+        print(e)
         return None
 
 
