@@ -4,6 +4,9 @@ import requests
 
 
 def get_url(url):
+    """获取json的url
+
+    """
     if url.find("&id=") != -1:
         id = url[url.find("&id=")+4:url.find("&id=")+16]
     else:
@@ -22,9 +25,9 @@ def get_html(url):
         if response.status_code == 200:
             result = json.loads(response.text.strip().strip('()'))
             return result
-    except requests.ConnectionError:
+    except requests.ConnectionError as e:
+        print(e)
         return None
-
 
 def get_data(json):
     total = json.get("total")
@@ -48,7 +51,7 @@ def main(url):
             print("该商品共有评论"+str(item["total"])+"条,具体如下: loading...")
             break
     for item in get_data(json):
-        while count < item["total"]:
+        while count <= item["total"]:
             next_url = new_url[:-1]+str(currentPageNum)
             json_2 = get_html(next_url)
             currentPageNum += 1
